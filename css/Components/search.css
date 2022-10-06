@@ -1,0 +1,20 @@
+#main-search {
+  padding: 16px 0px;
+}
+
+#main-searchbar {
+  background-color: #E7E7E7;
+  border: none;
+  color: black;
+  height: 50px;
+}
+
+.search-icon {
+  background-color: #E7E7E7;
+  border: none;
+}
+
+.search-icon i {
+  color: black;
+  font-size: 18px;
+}
