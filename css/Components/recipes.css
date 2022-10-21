@@ -1,0 +1,46 @@
+.recipes-wrapper {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 48px;
+}
+
+.recipe-wrapper {
+  width: 380px;
+}
+
+.recipe-wrapper img {
+  height: 178px;
+  object-fit: cover;
+}
+
+.recipe-wrapper .card-body {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background-color: #E7E7E7;
+  gap: 4px;
+}
+
+.recipe-time {
+  font-weight: 700;
+  text-align: right;
+}
+
+.recipe-description {
+  font-size: 12px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}
+
+/* ingredients */
+.ingredients-wrapper {
+  font-size: 12px;
+}
+
+.ingredient-name {
+  font-weight: 700;
+}
