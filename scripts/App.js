@@ -3,6 +3,7 @@
 class App {
   constructor() {
     this.data = new RecipiesApi("data/recipes.json");
+    this.$tagsWrapper = document.querySelector(".tags-wrapper");
     this.$recipesWrapper = document.querySelector(".recipes-wrapper");
     this.$searchWrapper = document.querySelector(".search-wrapper");
   }

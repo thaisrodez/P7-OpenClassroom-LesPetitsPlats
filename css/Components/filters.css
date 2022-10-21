@@ -1,7 +1,7 @@
 .search-wrapper {
   display: flex;
   gap: 24px;
-  margin: 24px 0;
+  margin: 12px 0 24px 0;
 }
 
 .filters {
@@ -34,6 +34,7 @@
 
 .filter-btn {
   color: white;
+  padding: 10px 20px;
 }
 
 .filter-btn:hover {

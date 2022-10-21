@@ -1,6 +1,7 @@
 @import url('./Components/search.css');
 @import url('./Components/recipes.css');
 @import url('./Components/filters.css');
+@import url('./Components/tags.css');
 
 * {
   margin: 0;
