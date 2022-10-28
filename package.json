@@ -1,0 +1,23 @@
+{
+  "name": "lespetitsplats",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thaisrodez/P7-OpenClassroom-LesPetitsPlats.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/thaisrodez/P7-OpenClassroom-LesPetitsPlats/issues"
+  },
+  "homepage": "https://github.com/thaisrodez/P7-OpenClassroom-LesPetitsPlats#readme",
+  "dependencies": {
+    "eslint": "^8.24.0"
+  }
+}

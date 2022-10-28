@@ -1,0 +1,31 @@
+.tags-wrapper {
+  display: flex;
+  gap: 24px;
+}
+
+.blue-bg {
+  background-color: #3282F7;
+}
+
+.green-bg {
+  background-color: #68D9A4;
+}
+
+.red-bg {
+  background-color: #ED6454;
+}
+
+.tag-wrapper {
+  color: white;
+  font-size: 14px;
+  border-radius: 5px;
+  padding: 8px 12px;
+  width: fit-content;
+}
+
+.tag-wrapper p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}

@@ -1,0 +1,93 @@
+.search-wrapper {
+  display: flex;
+  gap: 24px;
+  margin: 12px 0 24px 0;
+}
+
+.filters {
+  position: relative;
+}
+
+#ingredients button {
+  background-color: #3282F7;
+}
+
+#ingredients div {
+  background-color: #3282F7;
+}
+
+#appliances button {
+  background-color: #68D9A4;
+}
+
+#appliances div {
+  background-color: #68D9A4;
+}
+
+#ustensils button {
+  background-color: #ED6454;
+}
+
+#ustensils div {
+  background-color: #ED6454;
+}
+
+.filter-btn {
+  color: white;
+  padding: 10px 20px;
+  transition: width .15s ease-in-out;
+}
+
+.filter-btn:hover {
+  color: white;
+}
+
+.filter-btn:focus {
+  box-shadow: none;
+  width: 324px;
+  border-radius: 0.25rem 0.25rem 0 0;
+}
+
+.dropdown-menu {
+  margin: 0;
+  border: none;
+  border-radius: 0 0 0.25rem 0.25rem;
+}
+
+.dropdown-content {
+  padding: 0 18px;
+}
+
+.filters-input {
+  background-color: transparent;
+  border: none;
+  width: 268px;
+  color: white;
+}
+
+.filters-input:focus {
+  outline: none;
+}
+
+.filters-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.dropdown-grid {
+  margin: 0;
+  border-radius: 0 0 5px 5px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.two-sides-radius {
+  border-radius: 5px 5px 0 0;
+}
+
+.dropdown-item {
+  padding-left: 0;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
