@@ -1,4 +1,4 @@
-/* global RecipiesApi, Dropdown, Recipe */
+/* global RecipiesApi, Dropdown, Recipe, Search */
 
 class App {
   constructor() {
@@ -6,6 +6,15 @@ class App {
     this.$tagsWrapper = document.querySelector(".tags-wrapper");
     this.$recipesWrapper = document.querySelector(".recipes-wrapper");
     this.$searchWrapper = document.querySelector(".search-wrapper");
+
+    this.recipesData = [];
+  }
+
+  displayRecipes() {
+    this.recipesData.forEach((recipe) => {
+      const recipeTemplate = new Recipe(recipe);
+      this.$recipesWrapper.appendChild(recipeTemplate.createRecipeCard());
+    });
   }
 
   async main() {
@@ -25,12 +34,20 @@ class App {
     this.$searchWrapper.appendChild(applianceSearchTemplate.createDropdown());
     this.$searchWrapper.appendChild(ustensilsSearchTemplate.createDropdown());
 
-    const recipesData = await this.data.getRecipies();
-    console.log(recipesData);
+    this.recipesData = await this.data.getRecipies();
+    console.log(this.recipesData);
 
-    recipesData.forEach((recipe) => {
-      const recipeTemplate = new Recipe(recipe);
-      this.$recipesWrapper.appendChild(recipeTemplate.createRecipeCard());
+    this.displayRecipes();
+
+    // main search
+    const mainSearchBar = document.getElementById("main-searchbar");
+    mainSearchBar.addEventListener("keyup", (e) => {
+      if (e.target.value.length >= 3) {
+        const search = new Search(e.target.value, this.recipesData);
+        this.recipesData = search.search();
+        this.$recipesWrapper.innerHTML = "";
+        this.displayRecipes();
+      }
     });
   }
 }
