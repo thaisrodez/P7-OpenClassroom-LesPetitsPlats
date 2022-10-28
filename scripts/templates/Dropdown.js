@@ -54,7 +54,17 @@ class Dropdown {
   getElements() {
     let elementsHTML = "";
     this._data.forEach((element) => {
-      elementsHTML += `<a class="dropdown-item text-white" href="#">${element}</a>`;
+      switch (this._id) {
+        case "ingredients":
+          elementsHTML += `<li class="dropdown-item text-white" data-type="ingredient">${element}</li>`;
+          break;
+        case "ustensils":
+          elementsHTML += `<li class="dropdown-item text-white" data-type="ustensil">${element}</li>`;
+          break;
+        case "appliances":
+          elementsHTML += `<li class="dropdown-item text-white" data-type="appliance">${element}</li>`;
+          break;
+      }
     });
     return elementsHTML;
   }
@@ -81,11 +91,9 @@ class Dropdown {
         ${this.getTitle()}
       </button>
       <div class="dropdown-menu">
-        <div class="dropdown-content">
-          <div class="dropdown-grid">
+          <ul class="dropdown-grid">
             ${this.getElements()}
-          </div>
-        </div>
+          </ul>
       </div>
     </div>
     `;

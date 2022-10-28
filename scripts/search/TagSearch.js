@@ -1,42 +1,54 @@
 class TagSearch {
-  constructor(recipes) {
+  constructor(tagsData, recipes) {
+    this._tagsData = tagsData;
     this._recipes = recipes;
-    this.ingredients = [];
-    this.appliances = [];
-    this.ustensils = [];
+    this.matchingRecipes = [];
   }
 
-  onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
-  }
-
-  getIngredients() {
-    const ingredients = this._recipes.map((recipe) => {
-      return recipe.ingredients.map((ingredient) => ingredient.ingredient);
+  ingredientSearch() {
+    this._recipes.map((recipe) => {
+      const ingredients = recipe.ingredients.map(
+        (ingredient) => ingredient.ingredient
+      );
+      if (ingredients.includes(this._tag)) {
+        this.matchingRecipes.push(recipe);
+      }
     });
-
-    this.ingredients = ingredients.flat().filter(onlyUnique);
-
-    return this.ingredients;
+    return this.matchingRecipes;
   }
 
-  getAppliances() {
-    const appliances = this._recipes.map((recipe) => {
-      return recipe.appliance;
+  applianceSearch() {
+    this._recipes.map((recipe) => {
+      if (recipe.appliance === this._tag) {
+        this.matchingRecipes.push(recipe);
+      }
     });
-
-    this.appliances = appliances.filter(onlyUnique);
-
-    return this.appliances;
+    return this.matchingRecipes;
   }
 
-  getUstensils() {
-    const ustensils = this._recipes.map((recipe) => {
-      return recipe.ustensils;
+  ustensilSearch() {
+    this._recipes.map((recipe) => {
+      if (recipe.ustensils.includes(this._tag)) {
+        this.matchingRecipes.push(recipe);
+      }
     });
+    return this.matchingRecipes;
+  }
 
-    this.ustensils = ustensils.flat().filter(onlyUnique);
-
-    return this.ustensils;
+  tagSearch() {
+    this.matchingRecipes = this._tagsData.map((tagData) => {
+      switch (tagData.type) {
+        case "ingredient":
+          this.matchingRecipes = this.ingredientSearch();
+          break;
+        case "appliance":
+          this.matchingRecipes = this.applianceSearch();
+          break;
+        case "ustensil":
+          this.matchingRecipes = this.ustensilSearch();
+          break;
+      }
+    });
+    return this.matchingRecipes;
   }
 }

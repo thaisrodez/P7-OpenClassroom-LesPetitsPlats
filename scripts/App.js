@@ -1,4 +1,4 @@
-/* global RecipiesApi, Dropdown, Recipe, Search, TagSearch */
+/* global RecipiesApi, Dropdown, Recipe, Search, Tag, GetTag, TagSearch */
 
 class App {
   constructor() {
@@ -8,6 +8,7 @@ class App {
     this.$searchWrapper = document.querySelector(".search-wrapper");
 
     this.recipesData = [];
+    this.tagsData = [];
     this.ingredientsData = [];
     this.appliancesData = [];
     this.ustensilsData = [];
@@ -48,7 +49,7 @@ class App {
         this.recipesData = search.search();
         this.$recipesWrapper.innerHTML = "";
         this.displayRecipes();
-        const tagsSearch = new TagSearch(this.recipesData);
+        const tagsSearch = new GetTag(this.recipesData);
         this.ingredientsData = tagsSearch.getIngredients();
         this.appliancesData = tagsSearch.getAppliances();
         this.ustensilsData = tagsSearch.getUstensils();
@@ -58,6 +59,27 @@ class App {
         this.displayDropdown(this.ustensilsData, "ustensils");
       }
     });
+
+    // tag search
+    const tagsFilter = document.querySelectorAll(".dropdown-item");
+    for (const tagFilter of tagsFilter) {
+      tagFilter.addEventListener("click", (e) => {
+        const tagValue = e.target.innerHTML;
+        const tagType = e.target.dataset.type;
+        // display tagFilter
+        const tag = new Tag(tagValue, tagType);
+        this.$tagsWrapper.appendChild(tag.getTag());
+        // delete tag filter
+
+        // how to pass several tags ? with an array ?
+        const tagObject = { tag: tagValue, type: tagType };
+        this.tagsData.push(tagObject);
+        const tagSearch = new TagSearch(tagsData, this.recipesData);
+        this.recipesData = tagSearch.tagSearch();
+        this.$recipesWrapper.innerHTML = "";
+        this.displayRecipes();
+      });
+    }
   }
 }
 
