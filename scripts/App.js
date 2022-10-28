@@ -1,4 +1,4 @@
-/* global RecipiesApi, Dropdown, Recipe, Search */
+/* global RecipiesApi, Dropdown, Recipe, Search, TagSearch */
 
 class App {
   constructor() {
@@ -8,6 +8,9 @@ class App {
     this.$searchWrapper = document.querySelector(".search-wrapper");
 
     this.recipesData = [];
+    this.ingredientsData = [];
+    this.appliancesData = [];
+    this.ustensilsData = [];
   }
 
   displayRecipes() {
@@ -17,26 +20,24 @@ class App {
     });
   }
 
+  displayDropdown(data, id) {
+    const template = new Dropdown(data, id);
+    this.$searchWrapper.appendChild(template.createDropdown());
+  }
+
   async main() {
     // get search filters data
-    const ingredientsData = await this.data.getIngredients();
-    const appliancesData = await this.data.getAppliances();
-    const ustensilsData = await this.data.getUstensils();
-    const ingredientSearchTemplate = new Dropdown(
-      ingredientsData,
-      "ingredients"
-    );
-    const applianceSearchTemplate = new Dropdown(appliancesData, "appliances");
-    const ustensilsSearchTemplate = new Dropdown(ustensilsData, "ustensils");
+    this.ingredientsData = await this.data.getIngredients();
+    this.appliancesData = await this.data.getAppliances();
+    this.ustensilsData = await this.data.getUstensils();
+    // display filters
+    this.displayDropdown(this.ingredientsData, "ingredients");
+    this.displayDropdown(this.appliancesData, "appliances");
+    this.displayDropdown(this.ustensilsData, "ustensils");
 
-    // insert filters in DOM
-    this.$searchWrapper.appendChild(ingredientSearchTemplate.createDropdown());
-    this.$searchWrapper.appendChild(applianceSearchTemplate.createDropdown());
-    this.$searchWrapper.appendChild(ustensilsSearchTemplate.createDropdown());
-
+    // display recipes
     this.recipesData = await this.data.getRecipies();
     console.log(this.recipesData);
-
     this.displayRecipes();
 
     // main search
@@ -47,6 +48,14 @@ class App {
         this.recipesData = search.search();
         this.$recipesWrapper.innerHTML = "";
         this.displayRecipes();
+        const tagsSearch = new TagSearch(this.recipesData);
+        this.ingredientsData = tagsSearch.getIngredients();
+        this.appliancesData = tagsSearch.getAppliances();
+        this.ustensilsData = tagsSearch.getUstensils();
+        this.$searchWrapper.innerHTML = "";
+        this.displayDropdown(this.ingredientsData, "ingredients");
+        this.displayDropdown(this.appliancesData, "appliances");
+        this.displayDropdown(this.ustensilsData, "ustensils");
       }
     });
   }
