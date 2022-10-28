@@ -7,16 +7,6 @@ class Dropdown {
     this._id = id;
   }
 
-  getStyle() {
-    const dropdownMenu = this.$dropdownWrapper.querySelector(".dropdown-menu");
-    const dropdownBtn = this.$dropdownWrapper.querySelector(".btn");
-    if (dropdownMenu.classList.contains("show")) {
-      dropdownBtn.classList.add("two-sides-radius");
-    } else {
-      dropdownBtn.classList.remove("two-sides-radius");
-    }
-  }
-
   getTitle() {
     switch (this._id) {
       case "ingredients":
@@ -28,25 +18,35 @@ class Dropdown {
     }
   }
 
-  getPlaceholder() {
+  getInput() {
     switch (this._id) {
       case "ingredients":
-        return "Rechercher un ingrédient";
+        return `
+        <input
+          type="text"
+          placeholder="Rechercher un ingrédients"
+          id="filter-ingredients"
+          class="filters-input"
+          />
+          `;
       case "ustensils":
-        return "Rechercher un ustensil";
+        return `
+        <input
+          type="text"
+          placeholder="Rechercher un ustensile"
+          id="filter-ustensils"
+          class="filters-input"
+          />
+          `;
       case "appliances":
-        return "Rechercher un appareil";
-    }
-  }
-
-  getInputId() {
-    switch (this._id) {
-      case "ingredients":
-        return "filter-ingredients";
-      case "ustensils":
-        return "filter-ustensils";
-      case "appliances":
-        return "filter-appliances";
+        return `
+        <input
+          type="text"
+          placeholder="Rechercher un appareil"
+          id="filter-appliances"
+          class="filters-input"
+          />
+          `;
     }
   }
 
@@ -59,6 +59,21 @@ class Dropdown {
     return elementsHTML;
   }
 
+  onBtnClick() {
+    const btn = this.$dropdownWrapper.querySelector(".btn");
+    btn.addEventListener("click", (e) => {
+      if (btn.getAttribute("aria-expanded")) {
+        const dropdownMenu =
+          this.$dropdownWrapper.querySelector(".dropdown-menu");
+        console.log(dropdownMenu.clientWidth);
+        e.target.innerHTML = this.getInput();
+      } else {
+        btn.innerHTML = "";
+        btn.textContent = this.getTitle();
+      }
+    });
+  }
+
   createDropdown() {
     const dropDown = `
     <div class="btn-group " id=${this._id}>
@@ -67,11 +82,6 @@ class Dropdown {
       </button>
       <div class="dropdown-menu">
         <div class="dropdown-content">
-          <input type="text"
-          id=${this.getInputId()}
-          placeholer=${this.getPlaceholder()}
-          class="filters-input"
-          />
           <div class="dropdown-grid">
             ${this.getElements()}
           </div>
@@ -81,8 +91,7 @@ class Dropdown {
     `;
 
     this.$dropdownWrapper.innerHTML = dropDown;
-
-    this.getStyle();
+    this.onBtnClick();
 
     return this.$dropdownWrapper;
   }
