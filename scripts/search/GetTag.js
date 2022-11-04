@@ -14,7 +14,7 @@ class GetTag {
     const ingredients = this._recipes.map((recipe) => {
       return recipe.ingredients.map((ingredient) => ingredient.ingredient);
     });
-    this.ingredients = ingredients.flat().filter(onlyUnique);
+    this.ingredients = ingredients.flat().filter(this.onlyUnique);
 
     return this.ingredients;
   }

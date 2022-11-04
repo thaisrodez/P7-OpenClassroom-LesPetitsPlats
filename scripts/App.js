@@ -62,7 +62,7 @@ class App {
 
     // tag search
     const tagsFilter = document.querySelectorAll(".dropdown-item");
-    for (const tagFilter of tagsFilter) {
+    tagsFilter.forEach((tagFilter) => {
       tagFilter.addEventListener("click", (e) => {
         const tagValue = e.target.innerHTML;
         const tagType = e.target.dataset.type;
@@ -74,12 +74,12 @@ class App {
         // how to pass several tags ? with an array ?
         const tagObject = { tag: tagValue, type: tagType };
         this.tagsData.push(tagObject);
-        const tagSearch = new TagSearch(tagsData, this.recipesData);
+        const tagSearch = new TagSearch(this.tagsData, this.recipesData);
         this.recipesData = tagSearch.tagSearch();
         this.$recipesWrapper.innerHTML = "";
         this.displayRecipes();
       });
-    }
+    });
   }
 }
 

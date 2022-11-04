@@ -5,47 +5,46 @@ class TagSearch {
     this.matchingRecipes = [];
   }
 
-  ingredientSearch() {
-    this._recipes.map((recipe) => {
+  getRecipies() {
+    if (this.matchingRecipes.length) return this.matchingRecipes;
+    return this._recipes;
+  }
+
+  ingredientSearch(tag) {
+    this.matchingRecipes = this.getRecipies().filter((recipe) => {
       const ingredients = recipe.ingredients.map(
         (ingredient) => ingredient.ingredient
       );
-      if (ingredients.includes(this._tag)) {
-        this.matchingRecipes.push(recipe);
-      }
+      return ingredients.includes(tag);
     });
     return this.matchingRecipes;
   }
 
-  applianceSearch() {
-    this._recipes.map((recipe) => {
-      if (recipe.appliance === this._tag) {
-        this.matchingRecipes.push(recipe);
-      }
+  applianceSearch(tag) {
+    this.matchingRecipes = this.getRecipies().filter((recipe) => {
+      return recipe.appliance === tag;
     });
     return this.matchingRecipes;
   }
 
-  ustensilSearch() {
-    this._recipes.map((recipe) => {
-      if (recipe.ustensils.includes(this._tag)) {
-        this.matchingRecipes.push(recipe);
-      }
+  ustensilSearch(tag) {
+    this.matchingRecipes = this.getRecipies().filter((recipe) => {
+      return recipe.ustensils.includes(tag);
     });
     return this.matchingRecipes;
   }
 
   tagSearch() {
-    this.matchingRecipes = this._tagsData.map((tagData) => {
+    this._tagsData.forEach((tagData) => {
       switch (tagData.type) {
         case "ingredient":
-          this.matchingRecipes = this.ingredientSearch();
+          this.ingredientSearch(tagData.tag);
           break;
         case "appliance":
-          this.matchingRecipes = this.applianceSearch();
+          this.applianceSearch(tagData.tag);
           break;
         case "ustensil":
-          this.matchingRecipes = this.ustensilSearch();
+          this.ustensilSearch(tagData.tag);
           break;
       }
     });
