@@ -75,10 +75,11 @@ class Dropdown {
     btn.addEventListener("click", (e) => {
       if (btn.getAttribute("aria-expanded")) {
         e.target.innerHTML = this.getInput();
-      } else {
-        btn.innerHTML = "";
-        btn.textContent = this.getTitle();
       }
+      // if (btn.getAttribute("aria-expanded") === false) {
+      //   btn.innerHTML = "";
+      //   btn.textContent = this.getTitle();
+      // }
     });
   }
 
@@ -95,7 +96,7 @@ class Dropdown {
     `;
 
     this.$dropdownWrapper.innerHTML = dropDown;
-    // this.onBtnClick();
+    this.onBtnClick();
 
     return this.$dropdownWrapper;
   }
