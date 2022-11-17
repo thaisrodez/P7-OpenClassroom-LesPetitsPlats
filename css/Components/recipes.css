@@ -5,8 +5,9 @@
   gap: 48px;
 }
 
-.recipe-wrapper {
+.recipe-wrapper article {
   width: 380px;
+  height: 420px;
 }
 
 .recipe-wrapper img {
