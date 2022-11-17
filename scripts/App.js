@@ -14,6 +14,7 @@ class App {
     this.ustensilsData = [];
   }
 
+  // display Recipes card
   displayRecipes() {
     this.recipesData.forEach((recipe) => {
       const recipeTemplate = new Recipe(recipe);
@@ -21,27 +22,21 @@ class App {
     });
   }
 
+  // display one dropDown filter
   displayDropdown(data, id) {
     const template = new Dropdown(data, id);
     this.$searchWrapper.appendChild(template.createDropdown());
   }
 
-  async main() {
-    // get search filters data
-    this.ingredientsData = await this.data.getIngredients();
-    this.appliancesData = await this.data.getAppliances();
-    this.ustensilsData = await this.data.getUstensils();
-    // display filters
+  // display all dropdowns filters
+  displayDropdowns() {
     this.displayDropdown(this.ingredientsData, "ingredients");
     this.displayDropdown(this.appliancesData, "appliances");
     this.displayDropdown(this.ustensilsData, "ustensils");
+  }
 
-    // display recipes
-    this.recipesData = await this.data.getRecipies();
-    console.log(this.recipesData);
-    this.displayRecipes();
-
-    // main search
+  // handle main search
+  mainSearch() {
     const mainSearchBar = document.getElementById("main-searchbar");
     mainSearchBar.addEventListener("keyup", (e) => {
       if (e.target.value.length >= 3) {
@@ -49,18 +44,16 @@ class App {
         this.recipesData = search.search();
         this.$recipesWrapper.innerHTML = "";
         this.displayRecipes();
-        const tagsSearch = new GetTag(this.recipesData);
-        this.ingredientsData = tagsSearch.getIngredients();
-        this.appliancesData = tagsSearch.getAppliances();
-        this.ustensilsData = tagsSearch.getUstensils();
+        this.getTags();
         this.$searchWrapper.innerHTML = "";
-        this.displayDropdown(this.ingredientsData, "ingredients");
-        this.displayDropdown(this.appliancesData, "appliances");
-        this.displayDropdown(this.ustensilsData, "ustensils");
+        this.displayDropdowns();
+        this.tagSearch();
       }
     });
+  }
 
-    // tag search
+  // handle tag search
+  tagSearch() {
     const tagsFilter = document.querySelectorAll(".dropdown-item");
     tagsFilter.forEach((tagFilter) => {
       tagFilter.addEventListener("click", (e) => {
@@ -69,7 +62,6 @@ class App {
         // display tagFilter
         const tag = new Tag(tagValue, tagType);
         this.$tagsWrapper.appendChild(tag.getTag());
-        // delete tag filter
 
         // how to pass several tags ? with an array ?
         const tagObject = { tag: tagValue, type: tagType };
@@ -77,9 +69,51 @@ class App {
         const tagSearch = new TagSearch(this.tagsData, this.recipesData);
         this.recipesData = tagSearch.tagSearch();
         this.$recipesWrapper.innerHTML = "";
+        this.getTags();
         this.displayRecipes();
+        this.mainSearch();
+        // delete tag filter
       });
     });
+  }
+
+  // get tags list
+  getTags() {
+    const getTag = new GetTag(this.recipesData);
+    this.ingredientsData = getTag.getIngredients();
+    this.appliancesData = getTag.getAppliances();
+    this.ustensilsData = getTag.getUstensils();
+  }
+
+  // deleteTag() {
+  //   const closeTagIcons =
+  //     this.$tagsWrapper.querySelectorAll(".fa-circle-xmark");
+  //   console.log(closeTagIcons);
+  //   // delete tag from search filters
+  //   // this.tagsData = this.tagsData.filter((t) => t.tag !== tagValue);
+  //   // hide tag
+  //   // launch search again
+  // }
+
+  async main() {
+    // get search filters data
+    this.ingredientsData = await this.data.getIngredients();
+    this.appliancesData = await this.data.getAppliances();
+    this.ustensilsData = await this.data.getUstensils();
+    // display filters
+    this.displayDropdowns();
+
+    // display recipes
+    this.recipesData = await this.data.getRecipies();
+    this.displayRecipes();
+
+    // main search
+    this.mainSearch();
+
+    // tag search
+    this.tagSearch();
+
+    // this.deleteTag();
   }
 }
 
