@@ -35,19 +35,22 @@ class TagSearch {
   }
 
   tagSearch() {
-    this._tagsData.forEach((tagData) => {
-      switch (tagData.type) {
-        case "ingredient":
-          this.ingredientSearch(tagData.tag);
-          break;
-        case "appliance":
-          this.applianceSearch(tagData.tag);
-          break;
-        case "ustensil":
-          this.ustensilSearch(tagData.tag);
-          break;
-      }
-    });
-    return this.matchingRecipes;
+    if (this._tagsData.length) {
+      this._tagsData.forEach((tagData) => {
+        switch (tagData.type) {
+          case "ingredient":
+            this.ingredientSearch(tagData.tag);
+            break;
+          case "appliance":
+            this.applianceSearch(tagData.tag);
+            break;
+          case "ustensil":
+            this.ustensilSearch(tagData.tag);
+            break;
+        }
+      });
+      return this.matchingRecipes;
+    }
+    return this._recipes;
   }
 }

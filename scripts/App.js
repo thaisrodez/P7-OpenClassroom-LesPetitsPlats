@@ -47,13 +47,14 @@ class App {
         this.getTags();
         this.$searchWrapper.innerHTML = "";
         this.displayDropdowns();
-        this.tagSearch();
+        this.handleFilters();
+        this.deleteTag();
       }
     });
   }
 
   // handle tag search
-  tagSearch() {
+  handleFilters() {
     const tagsFilter = document.querySelectorAll(".dropdown-item");
     tagsFilter.forEach((tagFilter) => {
       tagFilter.addEventListener("click", (e) => {
@@ -66,15 +67,20 @@ class App {
         // how to pass several tags ? with an array ?
         const tagObject = { tag: tagValue, type: tagType };
         this.tagsData.push(tagObject);
-        const tagSearch = new TagSearch(this.tagsData, this.recipesData);
-        this.recipesData = tagSearch.tagSearch();
-        this.$recipesWrapper.innerHTML = "";
-        this.getTags();
-        this.displayRecipes();
-        this.mainSearch();
+        this.tagsSearch(this.recipesData);
         // delete tag filter
+        this.deleteTag();
       });
     });
+  }
+
+  tagsSearch(recipes) {
+    const tagSearch = new TagSearch(this.tagsData, recipes);
+    this.recipesData = tagSearch.tagSearch();
+    this.$recipesWrapper.innerHTML = "";
+    this.displayRecipes();
+    this.getTags();
+    this.mainSearch();
   }
 
   // get tags list
@@ -85,15 +91,23 @@ class App {
     this.ustensilsData = getTag.getUstensils();
   }
 
-  // deleteTag() {
-  //   const closeTagIcons =
-  //     this.$tagsWrapper.querySelectorAll(".fa-circle-xmark");
-  //   console.log(closeTagIcons);
-  //   // delete tag from search filters
-  //   // this.tagsData = this.tagsData.filter((t) => t.tag !== tagValue);
-  //   // hide tag
-  //   // launch search again
-  // }
+  async deleteTag() {
+    const fullRecipes = await this.data.getRecipies();
+    const tags = document.querySelectorAll(".tag-wrapper");
+    tags.forEach((tag) => {
+      tag.querySelector("i").addEventListener("click", () => {
+        // delete tag from search filters and relaunch filters and search
+        this.tagsData = this.tagsData.filter((t) => t.tag !== tag.dataset.tag);
+        // remove tag
+        if (document.getElementById(`${tag.dataset.tag}`)) {
+          document.getElementById(`${tag.dataset.tag}`).remove();
+        }
+        // launch search again
+        this.tagsSearch(fullRecipes);
+        this.mainSearch;
+      });
+    });
+  }
 
   async main() {
     // get search filters data
@@ -111,7 +125,7 @@ class App {
     this.mainSearch();
 
     // tag search
-    this.tagSearch();
+    this.handleFilters();
 
     // this.deleteTag();
   }
