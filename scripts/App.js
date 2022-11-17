@@ -68,6 +68,7 @@ class App {
         const tagObject = { tag: tagValue, type: tagType };
         this.tagsData.push(tagObject);
         this.tagsSearch(this.recipesData);
+        this.handleFilters();
         // delete tag filter
         this.deleteTag();
       });
@@ -80,6 +81,8 @@ class App {
     this.$recipesWrapper.innerHTML = "";
     this.displayRecipes();
     this.getTags();
+    this.$searchWrapper.innerHTML = "";
+    this.displayDropdowns();
     this.mainSearch();
   }
 
@@ -126,8 +129,6 @@ class App {
 
     // tag search
     this.handleFilters();
-
-    // this.deleteTag();
   }
 }
 
