@@ -3,6 +3,7 @@
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 48px;
+  margin-bottom: 48px;
 }
 
 .recipe-wrapper article {

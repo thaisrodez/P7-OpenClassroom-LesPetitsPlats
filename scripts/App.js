@@ -7,11 +7,17 @@ class App {
     this.$recipesWrapper = document.querySelector(".recipes-wrapper");
     this.$searchWrapper = document.querySelector(".search-wrapper");
 
+    this.searchInput = "";
     this.recipesData = [];
     this.tagsData = [];
     this.ingredientsData = [];
     this.appliancesData = [];
     this.ustensilsData = [];
+  }
+
+  async getRecipies() {
+    const recipes = await this.data.getRecipies();
+    return recipes;
   }
 
   // display Recipes card
@@ -40,25 +46,31 @@ class App {
     this.displayDropdown(this.ustensilsData, "ustensils");
   }
 
+  // search
+  search() {
+    const search = new Search(this.searchInput, this.recipesData);
+    this.recipesData = search.search();
+    this.$recipesWrapper.innerHTML = "";
+    this.displayRecipes();
+    this.getTags();
+    this.$searchWrapper.innerHTML = "";
+    this.displayDropdowns();
+    this.handleFilters();
+    this.deleteTag();
+  }
+
   // handle main search
-  mainSearch() {
+  handleMainSearch() {
     const mainSearchBar = document.getElementById("main-searchbar");
     mainSearchBar.addEventListener("keyup", (e) => {
       if (e.target.value.length >= 3) {
-        const search = new Search(e.target.value, this.recipesData);
-        this.recipesData = search.search();
-        this.$recipesWrapper.innerHTML = "";
-        this.displayRecipes();
-        this.getTags();
-        this.$searchWrapper.innerHTML = "";
-        this.displayDropdowns();
-        this.handleFilters();
-        this.deleteTag();
+        this.searchInput = e.target.value;
+        this.search();
       }
     });
   }
 
-  // handle tag search
+  // handle tag search and display tag
   handleFilters() {
     const tagsFilter = document.querySelectorAll(".dropdown-item");
     tagsFilter.forEach((tagFilter) => {
@@ -73,7 +85,6 @@ class App {
         const tagObject = { tag: tagValue, type: tagType };
         this.tagsData.push(tagObject);
         this.tagsSearch(this.recipesData);
-        this.handleFilters();
         // delete tag filter
         this.deleteTag();
       });
@@ -88,7 +99,7 @@ class App {
     this.getTags();
     this.$searchWrapper.innerHTML = "";
     this.displayDropdowns();
-    this.mainSearch();
+    this.search();
   }
 
   // get tags list
@@ -100,7 +111,7 @@ class App {
   }
 
   async deleteTag() {
-    const fullRecipes = await this.data.getRecipies();
+    const fullRecipes = await this.getRecipies();
     const tags = document.querySelectorAll(".tag-wrapper");
     tags.forEach((tag) => {
       tag.querySelector("i").addEventListener("click", () => {
@@ -112,7 +123,7 @@ class App {
         }
         // launch search again
         this.tagsSearch(fullRecipes);
-        this.mainSearch;
+        this.handleMainSearch;
       });
     });
   }
@@ -126,11 +137,11 @@ class App {
     this.displayDropdowns();
 
     // display recipes
-    this.recipesData = await this.data.getRecipies();
+    this.recipesData = await this.getRecipies();
     this.displayRecipes();
 
     // main search
-    this.mainSearch();
+    this.handleMainSearch();
 
     // tag search
     this.handleFilters();
