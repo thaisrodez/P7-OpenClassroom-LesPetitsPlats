@@ -16,10 +16,15 @@ class App {
 
   // display Recipes card
   displayRecipes() {
-    this.recipesData.forEach((recipe) => {
-      const recipeTemplate = new Recipe(recipe);
-      this.$recipesWrapper.appendChild(recipeTemplate.createRecipeCard());
-    });
+    if (this.recipesData.length) {
+      this.recipesData.forEach((recipe) => {
+        const recipeTemplate = new Recipe(recipe);
+        this.$recipesWrapper.appendChild(recipeTemplate.createRecipeCard());
+      });
+    } else {
+      this.$recipesWrapper.innerHTML =
+        "<p>Aucune recette ne correspond à votre recherche</p>";
+    }
   }
 
   // display one dropDown filter

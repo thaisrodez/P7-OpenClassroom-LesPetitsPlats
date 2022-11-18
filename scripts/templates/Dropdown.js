@@ -4,8 +4,8 @@ class Dropdown {
     this._id = id;
 
     this.$dropdownWrapper = document.createElement("div");
-    this.$dropdownWrapper.classList.add("btn-group", "filters");
-    this.$dropdownWrapper.setAttribute("id", this._id);
+    this.$dropdownWrapper.classList.add("filters");
+    // this.$dropdownWrapper.setAttribute("id", this._id);
   }
 
   getTitle() {
@@ -85,6 +85,7 @@ class Dropdown {
 
   createDropdown() {
     const dropDown = `
+    <div class="btn-group" id=${this._id}>
       <button type="button" class="btn dropdown-toggle filter-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         ${this.getTitle()}
       </button>
@@ -93,6 +94,7 @@ class Dropdown {
             ${this.getElements()}
           </ul>
       </div>
+    </div>
     `;
 
     this.$dropdownWrapper.innerHTML = dropDown;

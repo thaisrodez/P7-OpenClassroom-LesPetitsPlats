@@ -4,9 +4,9 @@
   margin: 12px 0 24px 0;
 }
 
-.filters:focus-within {
+/* .filters:focus-within {
   width: 100%;
-}
+} */
 
 #ingredients button {
   background-color: #3282F7;
@@ -36,6 +36,10 @@
   width: 100%;
 }
 
+/* .filters {
+  width: ;
+} */
+
 .filter-btn {
   color: white;
   padding: 10px 20px;
@@ -55,6 +59,7 @@
   margin: 0;
   border: none;
   border-radius: 0 0 0.25rem 0.25rem;
+  width: 100%;
 }
 
 .filters-input {
