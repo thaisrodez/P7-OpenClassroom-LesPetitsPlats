@@ -15,6 +15,7 @@ class App {
     this.ustensilsData = [];
   }
 
+  // get all recipes data
   async getRecipies() {
     const recipes = await this.data.getRecipies();
     return recipes;
@@ -46,32 +47,53 @@ class App {
     this.displayDropdown(this.ustensilsData, "ustensils");
   }
 
-  // search
-  search() {
-    const search = new Search(this.searchInput, this.recipesData);
-    this.recipesData = search.search();
+  // display all search results
+  displayResults() {
     this.$recipesWrapper.innerHTML = "";
     this.displayRecipes();
     this.getTags();
     this.$searchWrapper.innerHTML = "";
     this.displayDropdowns();
+  }
+
+  // search
+  search() {
+    const search = new Search(this.searchInput, this.recipesData);
+    this.recipesData = search.search();
+    this.displayResults();
     this.handleFilters();
     this.deleteTag();
   }
 
   // handle main search
-  handleMainSearch() {
+  async handleMainSearch() {
+    const fullRecipes = await this.getRecipies();
     const mainSearchBar = document.getElementById("main-searchbar");
-    mainSearchBar.addEventListener("keyup", (e) => {
-      if (e.target.value.length >= 3) {
-        this.searchInput = e.target.value;
+    mainSearchBar.addEventListener("input", (e) => {
+      this.searchInput = e.target.value;
+      if (this.searchInput.length >= 3 && !this.tagsData.length) {
+        // main search  and no tags
+        this.recipesData = fullRecipes;
         this.search();
+      } else if (this.searchInput.length >= 3 && this.tagsData.length) {
+        // main search  and tags
+        this.search();
+      } else if (this.searchInput.length < 3 && this.tagsData.length) {
+        // tags but no main search
+        this.tagsSearch(fullRecipes);
+      } else if (this.searchInput.length < 3 && !this.tagsData.length) {
+        // no main search and no tags
+        this.recipesData = fullRecipes;
+        this.displayResults();
+        this.handleFilters();
+        this.deleteTag();
       }
     });
   }
 
   // handle tag search and display tag
-  handleFilters() {
+  async handleFilters() {
+    const fullRecipes = await this.getRecipies();
     const tagsFilter = document.querySelectorAll(".dropdown-item");
     tagsFilter.forEach((tagFilter) => {
       tagFilter.addEventListener("click", (e) => {
@@ -81,10 +103,14 @@ class App {
         const tag = new Tag(tagValue, tagType);
         this.$tagsWrapper.appendChild(tag.getTag());
 
-        // how to pass several tags ? with an array ?
         const tagObject = { tag: tagValue, type: tagType };
         this.tagsData.push(tagObject);
-        this.tagsSearch(this.recipesData);
+        if (this.tagsData && !this.searchInput.length) {
+          // tags but no main search
+          this.tagsSearch(fullRecipes);
+        } else {
+          this.tagsSearch(this.recipesData);
+        }
         // delete tag filter
         this.deleteTag();
       });
@@ -94,11 +120,7 @@ class App {
   tagsSearch(recipes) {
     const tagSearch = new TagSearch(this.tagsData, recipes);
     this.recipesData = tagSearch.tagSearch();
-    this.$recipesWrapper.innerHTML = "";
-    this.displayRecipes();
-    this.getTags();
-    this.$searchWrapper.innerHTML = "";
-    this.displayDropdowns();
+    this.displayResults();
     this.search();
   }
 
@@ -117,7 +139,7 @@ class App {
       tag.querySelector("i").addEventListener("click", () => {
         // delete tag from search filters and relaunch filters and search
         this.tagsData = this.tagsData.filter((t) => t.tag !== tag.dataset.tag);
-        // remove tag
+        // remove tag from DOM
         if (document.getElementById(`${tag.dataset.tag}`)) {
           document.getElementById(`${tag.dataset.tag}`).remove();
         }
@@ -133,12 +155,11 @@ class App {
     this.ingredientsData = await this.data.getIngredients();
     this.appliancesData = await this.data.getAppliances();
     this.ustensilsData = await this.data.getUstensils();
-    // display filters
-    this.displayDropdowns();
-
-    // display recipes
+    // get reciped data
     this.recipesData = await this.getRecipies();
-    this.displayRecipes();
+
+    // display first layout
+    this.displayResults();
 
     // main search
     this.handleMainSearch();

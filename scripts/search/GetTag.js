@@ -23,7 +23,7 @@ class GetTag {
     const appliances = this._recipes.map((recipe) => {
       return recipe.appliance;
     });
-    this.appliances = appliances.filter(onlyUnique);
+    this.appliances = appliances.filter(this.onlyUnique);
 
     return this.appliances;
   }
@@ -32,7 +32,7 @@ class GetTag {
     const ustensils = this._recipes.map((recipe) => {
       return recipe.ustensils;
     });
-    this.ustensils = ustensils.flat().filter(onlyUnique);
+    this.ustensils = ustensils.flat().filter(this.onlyUnique);
 
     return this.ustensils;
   }
