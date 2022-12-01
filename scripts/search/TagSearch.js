@@ -12,8 +12,8 @@ class TagSearch {
 
   ingredientSearch(tag) {
     this.matchingRecipes = this.getRecipies().filter((recipe) => {
-      const ingredients = recipe.ingredients.map(
-        (ingredient) => ingredient.ingredient
+      const ingredients = recipe.ingredients.map((ingredient) =>
+        ingredient.ingredient.toLowerCase()
       );
       return ingredients.includes(tag);
     });
@@ -22,14 +22,17 @@ class TagSearch {
 
   applianceSearch(tag) {
     this.matchingRecipes = this.getRecipies().filter((recipe) => {
-      return recipe.appliance === tag;
+      return recipe.appliance.toLowerCase() === tag;
     });
     return this.matchingRecipes;
   }
 
   ustensilSearch(tag) {
     this.matchingRecipes = this.getRecipies().filter((recipe) => {
-      return recipe.ustensils.includes(tag);
+      const ustensils = recipe.ustensils.map((ustensil) =>
+        ustensil.toLowerCase()
+      );
+      return ustensils.includes(tag);
     });
     return this.matchingRecipes;
   }

@@ -2,12 +2,12 @@
   display: flex;
   gap: 24px;
   margin: 12px 0 24px 0;
+  /* add */
+  /* width: 100%; */
+  /* add */
 }
 
-/* .filters:focus-within {
-  width: 100%;
-} */
-
+/* special color background */
 #ingredients button {
   background-color: #3282F7;
 }
@@ -32,40 +32,79 @@
   background-color: #ED6454;
 }
 
-.btn-group:focus {
-  width: 100%;
-}
-
 /* .filters {
-  width: ;
+  width: 50%;
 } */
 
-.filter-btn {
+/* .dropdown-group {
+  width: 100%;
+} */
+
+/* .dropdown-group button[aria-expanded='true'] {
+  background-color: red !important;
+}
+
+.dropdown-group button[aria-expanded="false"] {
+  flex: 1 !important;
+  background-color: blue;
+} */
+
+.dropdown-btn {
   color: white;
   padding: 10px 20px;
-  /* transition: width .15s ease-in-out; */
+  border-radius: 0.25rem;
+  border: none;
 }
 
-.filter-btn:hover {
+.dropdown-btn:hover {
   color: white;
 }
 
-.filter-btn:focus {
-  box-shadow: none;
+.dropdown-btn:focus {
+  outline: none;
   border-radius: 0.25rem 0.25rem 0 0;
 }
 
-.dropdown-menu {
+/* dropdown */
+.dropdown-div {
   margin: 0;
   border: none;
   border-radius: 0 0 0.25rem 0.25rem;
-  width: 100%;
+  width: 50%;
+  position: absolute;
+  z-index: 10;
 }
 
+.dropdown-elements {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 18px;
+  /* display: grid; */
+  /* grid-template-columns: repeat(3, 1fr); */
+}
+
+.dropdown-item {
+  padding-left: 0;
+  flex-wrap: wrap;
+  width: 50%;
+  cursor: pointer;
+}
+
+.dropdown-item:hover {
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.hidden {
+  display: none;
+}
+
+/* input */
 .filters-input {
   background-color: transparent;
   border: none;
   color: white;
+  padding: 18px;
+  width: 100%;
 }
 
 .filters-input:focus {
@@ -76,20 +115,6 @@
   color: rgba(255, 255, 255, 0.5);
 }
 
-.dropdown-grid {
-  padding: 0 18px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-}
-
 .two-sides-radius {
   border-radius: 5px 5px 0 0;
-}
-
-.dropdown-item {
-  padding-left: 0;
-}
-
-.dropdown-item:hover {
-  background-color: rgba(255, 255, 255, 0.3);
 }

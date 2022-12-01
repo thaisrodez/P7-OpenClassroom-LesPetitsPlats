@@ -71,26 +71,25 @@ class Dropdown {
   }
 
   onBtnClick() {
-    const btn = this.$dropdownWrapper.querySelector(".btn");
+    const btn = this.$dropdownWrapper.querySelector(".dropdown-btn");
     btn.addEventListener("click", (e) => {
-      if (btn.getAttribute("aria-expanded")) {
-        e.target.innerHTML = this.getInput();
-      }
-      // if (btn.getAttribute("aria-expanded") === false) {
-      //   btn.innerHTML = "";
-      //   btn.textContent = this.getTitle();
+      const dropdown = this.$dropdownWrapper.querySelector(".dropdown-div");
+      dropdown.classList.toggle("hidden");
+      // if (btn.getAttribute("aria-expanded")) {
+      //   e.target.innerHTML = this.getInput();
       // }
     });
   }
 
   createDropdown() {
     const dropDown = `
-    <div class="btn-group" id=${this._id}>
-      <button type="button" class="btn dropdown-toggle filter-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div class="dropdown-group" id=${this._id}>
+      <button type="button" class="dropdown-btn" aria-haspopup="true" aria-expanded="false">
         ${this.getTitle()}
       </button>
-      <div class="dropdown-menu">
-          <ul class="dropdown-grid">
+      <div class="dropdown-div hidden">
+          ${this.getInput()}
+          <ul class="dropdown-elements" id='list-${this._id}'>
             ${this.getElements()}
           </ul>
       </div>

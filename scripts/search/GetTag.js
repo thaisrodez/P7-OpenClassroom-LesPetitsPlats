@@ -12,7 +12,9 @@ class GetTag {
 
   getIngredients() {
     const ingredients = this._recipes.map((recipe) => {
-      return recipe.ingredients.map((ingredient) => ingredient.ingredient);
+      return recipe.ingredients.map((ingredient) =>
+        ingredient.ingredient.toLowerCase()
+      );
     });
     this.ingredients = ingredients.flat().filter(this.onlyUnique);
 
@@ -21,7 +23,7 @@ class GetTag {
 
   getAppliances() {
     const appliances = this._recipes.map((recipe) => {
-      return recipe.appliance;
+      return recipe.appliance.toLowerCase();
     });
     this.appliances = appliances.filter(this.onlyUnique);
 
@@ -30,7 +32,7 @@ class GetTag {
 
   getUstensils() {
     const ustensils = this._recipes.map((recipe) => {
-      return recipe.ustensils;
+      return recipe.ustensils.map((ustensil) => ustensil.toLowerCase());
     });
     this.ustensils = ustensils.flat().filter(this.onlyUnique);
 

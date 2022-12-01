@@ -61,6 +61,7 @@ class App {
     const search = new Search(this.searchInput, this.recipesData);
     this.recipesData = search.search();
     this.displayResults();
+    this.searchThroughTags();
     this.handleFilters();
     this.deleteTag();
   }
@@ -85,13 +86,14 @@ class App {
         // no main search and no tags
         this.recipesData = fullRecipes;
         this.displayResults();
+        this.searchThroughTags();
         this.handleFilters();
         this.deleteTag();
       }
     });
   }
 
-  // handle tag search and display tag
+  // handle search with tag and display tag
   async handleFilters() {
     const fullRecipes = await this.getRecipies();
     const tagsFilter = document.querySelectorAll(".dropdown-item");
@@ -122,6 +124,7 @@ class App {
     this.recipesData = tagSearch.tagSearch();
     this.displayResults();
     this.search();
+    this.searchThroughTags();
   }
 
   // get tags list
@@ -150,6 +153,55 @@ class App {
     });
   }
 
+  refreshTagList(data, id, type) {
+    const list = document.createElement("ul");
+    list.setAttribute("id", `list-${id}`);
+    list.classList.add("dropdown-elements");
+    data.forEach((item) => {
+      const li = document.createElement("li");
+      li.setAttribute("data-type", type);
+      li.classList.add("dropdown-item", "text-white");
+      li.textContent = item;
+      list.appendChild(li);
+    });
+    const formerList = document.getElementById(`list-${id}`);
+    formerList.replaceWith(list);
+  }
+
+  searchThroughTags() {
+    const filtersInput = document.querySelectorAll(".filters-input");
+    filtersInput.forEach((input) => {
+      input.addEventListener("input", (e) => {
+        const regex = new RegExp(e.target.value, "i");
+        switch (input.getAttribute("id")) {
+          case "filter-ingredients": {
+            const ingredientsData = this.ingredientsData.filter(
+              (ingredient) => {
+                return ingredient.search(regex) != -1;
+              }
+            );
+            this.refreshTagList(ingredientsData, "ingredients", "ingredient");
+            break;
+          }
+          case "filter-appliances": {
+            const appliancesData = this.appliancesData.filter((appliance) => {
+              return appliance.search(regex) != -1;
+            });
+            this.refreshTagList(appliancesData, "appliances", "appliance");
+            break;
+          }
+          case "filter-ustensils": {
+            const ustensilsData = this.ustensilsData.filter((ustensil) => {
+              return ustensil.search(regex) != -1;
+            });
+            this.refreshTagList(ustensilsData, "ustensils", "ustensil");
+            break;
+          }
+        }
+      });
+    });
+  }
+
   async main() {
     // get search filters data
     this.ingredientsData = await this.data.getIngredients();
@@ -164,7 +216,10 @@ class App {
     // main search
     this.handleMainSearch();
 
-    // tag search
+    // search for a tag
+    this.searchThroughTags();
+
+    // select tag search
     this.handleFilters();
   }
 }
