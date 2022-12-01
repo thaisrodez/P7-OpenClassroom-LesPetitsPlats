@@ -72,8 +72,10 @@ class Dropdown {
 
   onBtnClick() {
     const btn = this.$dropdownWrapper.querySelector(".dropdown-btn");
-    btn.addEventListener("click", (e) => {
-      const dropdown = this.$dropdownWrapper.querySelector(".dropdown-div");
+    const dropdown = this.$dropdownWrapper.querySelector(".dropdown-div");
+    btn.addEventListener("click", () => {
+      const expanded = btn.getAttribute("aria-expanded");
+      btn.setAttribute("aria-expanded", expanded === "false");
       dropdown.classList.toggle("hidden");
       // if (btn.getAttribute("aria-expanded")) {
       //   e.target.innerHTML = this.getInput();
