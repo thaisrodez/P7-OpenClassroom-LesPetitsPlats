@@ -9,26 +9,22 @@ class Search {
     const { ingredients } = recipe;
     let string = "";
     for (const ingredient of ingredients) {
-      string += ingredient.ingredient;
+      string += ingredient.ingredient.toLowerCase();
     }
     return string;
   }
 
   // search in title, ingredients, description
   search() {
-    for (const recipe of this._recipes) {
+    this.matchingRecipes = this._recipes.filter((recipe) => {
       const { name } = recipe;
       const { description } = recipe;
       const ingredientsString = this.ingredientsToString(recipe);
-      const regex = new RegExp(this._input, "i");
-      if (name.search(regex) != -1) {
-        this.matchingRecipes.push(recipe);
-      } else if (description.search(regex) != -1) {
-        this.matchingRecipes.push(recipe);
-      } else if (ingredientsString.search(regex) != -1) {
-        this.matchingRecipes.push(recipe);
-      }
-    }
+      const regex = new RegExp(this._input.toLowerCase(), "i");
+      if (name.toLowerCase().search(regex) != -1) return true;
+      if (description.search(regex) != -1) return true;
+      if (ingredientsString.search(regex) != -1) return true;
+    });
     return this.matchingRecipes;
   }
 }
