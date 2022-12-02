@@ -9,7 +9,7 @@ class Search {
     const { ingredients } = recipe;
     let string = "";
     for (const ingredient of ingredients) {
-      string += ingredient.ingredient;
+      string += ingredient.ingredient.toLowerCase();
     }
     return string;
   }
