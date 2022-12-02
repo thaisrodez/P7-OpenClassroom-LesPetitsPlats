@@ -1,10 +1,11 @@
 class Dropdown {
   constructor(data, id) {
-    this.$dropdownWrapper = document.createElement("div");
-    this.$dropdownWrapper.classList.add("filters");
-
     this._data = data;
     this._id = id;
+
+    this.$dropdownWrapper = document.createElement("div");
+    this.$dropdownWrapper.classList.add("filters");
+    // this.$dropdownWrapper.setAttribute("id", this._id);
   }
 
   getTitle() {
@@ -54,38 +55,45 @@ class Dropdown {
   getElements() {
     let elementsHTML = "";
     this._data.forEach((element) => {
-      elementsHTML += `<a class="dropdown-item text-white" href="#">${element}</a>`;
+      switch (this._id) {
+        case "ingredients":
+          elementsHTML += `<li class="dropdown-item text-white" data-type="ingredient">${element}</li>`;
+          break;
+        case "ustensils":
+          elementsHTML += `<li class="dropdown-item text-white" data-type="ustensil">${element}</li>`;
+          break;
+        case "appliances":
+          elementsHTML += `<li class="dropdown-item text-white" data-type="appliance">${element}</li>`;
+          break;
+      }
     });
     return elementsHTML;
   }
 
   onBtnClick() {
-    const btn = this.$dropdownWrapper.querySelector(".btn");
-    btn.addEventListener("click", (e) => {
-      if (btn.getAttribute("aria-expanded")) {
-        const dropdownMenu =
-          this.$dropdownWrapper.querySelector(".dropdown-menu");
-        console.log(dropdownMenu.clientWidth);
-        e.target.innerHTML = this.getInput();
-      } else {
-        btn.innerHTML = "";
-        btn.textContent = this.getTitle();
-      }
+    const btn = this.$dropdownWrapper.querySelector(".dropdown-btn");
+    const dropdown = this.$dropdownWrapper.querySelector(".dropdown-div");
+    btn.addEventListener("click", () => {
+      const expanded = btn.getAttribute("aria-expanded");
+      btn.setAttribute("aria-expanded", expanded === "false");
+      dropdown.classList.toggle("hidden");
+      // if (btn.getAttribute("aria-expanded")) {
+      //   e.target.innerHTML = this.getInput();
+      // }
     });
   }
 
   createDropdown() {
     const dropDown = `
-    <div class="btn-group " id=${this._id}>
-      <button type="button" class="btn dropdown-toggle filter-btn" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <div class="dropdown-group" id=${this._id}>
+      <button type="button" class="dropdown-btn" aria-haspopup="true" aria-expanded="false">
         ${this.getTitle()}
       </button>
-      <div class="dropdown-menu">
-        <div class="dropdown-content">
-          <div class="dropdown-grid">
+      <div class="dropdown-div hidden">
+          ${this.getInput()}
+          <ul class="dropdown-elements" id='list-${this._id}'>
             ${this.getElements()}
-          </div>
-        </div>
+          </ul>
       </div>
     </div>
     `;

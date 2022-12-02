@@ -5,6 +5,10 @@ class Tag {
 
     this.$tagwrapper = document.createElement("div");
     this.$tagwrapper.classList.add("tag-wrapper");
+    this.$tagwrapper.setAttribute("id", this._tag);
+
+    this.$tagwrapper.setAttribute("data-type", this._type);
+    this.$tagwrapper.setAttribute("data-tag", this._tag);
   }
 
   getStyle() {
@@ -23,7 +27,8 @@ class Tag {
 
   getTag() {
     const tagParagraph = `
-     <p>${this._tag} <i class="fa-regular fa-circle-xmark"></i></p>
+     <p>${this._tag}</p>
+     <i class="fa-regular fa-circle-xmark"></i>
     `;
 
     this.$tagwrapper.innerHTML = tagParagraph;
