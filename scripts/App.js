@@ -61,7 +61,6 @@ class App {
     const search = new Search(this.searchInput, this.recipesData);
     this.recipesData = search.search();
     this.displayResults();
-    this.searchThroughTags();
     this.handleFilters();
     this.deleteTag();
   }
@@ -171,7 +170,7 @@ class App {
   searchThroughTags() {
     const filtersInput = document.querySelectorAll(".filters-input");
     filtersInput.forEach((input) => {
-      input.addEventListener("input", (e) => {
+      input.addEventListener("keyup", (e) => {
         const regex = new RegExp(e.target.value, "i");
         switch (input.getAttribute("id")) {
           case "filter-ingredients": {
@@ -181,6 +180,7 @@ class App {
               }
             );
             this.refreshTagList(ingredientsData, "ingredients", "ingredient");
+            this.handleFilters();
             break;
           }
           case "filter-appliances": {
@@ -188,6 +188,7 @@ class App {
               return appliance.search(regex) != -1;
             });
             this.refreshTagList(appliancesData, "appliances", "appliance");
+            this.handleFilters();
             break;
           }
           case "filter-ustensils": {
@@ -195,6 +196,7 @@ class App {
               return ustensil.search(regex) != -1;
             });
             this.refreshTagList(ustensilsData, "ustensils", "ustensil");
+            this.handleFilters();
             break;
           }
         }
