@@ -61,6 +61,7 @@ class App {
     const search = new Search(this.searchInput, this.recipesData);
     this.recipesData = search.search();
     this.displayResults();
+    this.searchThroughTags();
     this.handleFilters();
     this.deleteTag();
   }
@@ -100,12 +101,16 @@ class App {
       tagFilter.addEventListener("click", (e) => {
         const tagValue = e.target.innerHTML;
         const tagType = e.target.dataset.type;
-        // display tagFilter
-        const tag = new Tag(tagValue, tagType);
-        this.$tagsWrapper.appendChild(tag.getTag());
-
         const tagObject = { tag: tagValue, type: tagType };
-        this.tagsData.push(tagObject);
+        // check if object already exists in tagsData
+        const isFound = this.tagsData.some((obj) => obj.tag === tagValue);
+        if (!isFound) {
+          // display tagFilter
+          const tag = new Tag(tagValue, tagType);
+          this.$tagsWrapper.appendChild(tag.getTag());
+
+          this.tagsData.push(tagObject);
+        }
         if (this.tagsData && !this.searchInput.length) {
           // tags but no main search
           this.tagsSearch(fullRecipes);
